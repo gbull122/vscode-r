@@ -39,6 +39,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.R.LanguageServer.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.R.LanguageServer", "LanguageServer\Impl\Microsoft.R.LanguageServer.csproj", "{D7C73C94-BDDC-4210-AF24-4A5D0AA0DF31}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.R.Host.Client.Api", "Host\API\Microsoft.R.Host.Client.Api\Microsoft.R.Host.Client.Api.csproj", "{DD4B5A2A-C5B3-49B4-90CC-1D07BB6F055C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -253,6 +255,18 @@ Global
 		{D7C73C94-BDDC-4210-AF24-4A5D0AA0DF31}.Release|x64.Build.0 = Release|Any CPU
 		{D7C73C94-BDDC-4210-AF24-4A5D0AA0DF31}.Release|x86.ActiveCfg = Release|Any CPU
 		{D7C73C94-BDDC-4210-AF24-4A5D0AA0DF31}.Release|x86.Build.0 = Release|Any CPU
+		{DD4B5A2A-C5B3-49B4-90CC-1D07BB6F055C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD4B5A2A-C5B3-49B4-90CC-1D07BB6F055C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD4B5A2A-C5B3-49B4-90CC-1D07BB6F055C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{DD4B5A2A-C5B3-49B4-90CC-1D07BB6F055C}.Debug|x64.Build.0 = Debug|Any CPU
+		{DD4B5A2A-C5B3-49B4-90CC-1D07BB6F055C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{DD4B5A2A-C5B3-49B4-90CC-1D07BB6F055C}.Debug|x86.Build.0 = Debug|Any CPU
+		{DD4B5A2A-C5B3-49B4-90CC-1D07BB6F055C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD4B5A2A-C5B3-49B4-90CC-1D07BB6F055C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD4B5A2A-C5B3-49B4-90CC-1D07BB6F055C}.Release|x64.ActiveCfg = Release|Any CPU
+		{DD4B5A2A-C5B3-49B4-90CC-1D07BB6F055C}.Release|x64.Build.0 = Release|Any CPU
+		{DD4B5A2A-C5B3-49B4-90CC-1D07BB6F055C}.Release|x86.ActiveCfg = Release|Any CPU
+		{DD4B5A2A-C5B3-49B4-90CC-1D07BB6F055C}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
