@@ -1,26 +1,33 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-"use strict";
+'use strict';
 
-import * as vscode from "vscode";
+import { Terminal, window } from 'vscode';
+import { Disposable } from 'vscode-languageclient';
 
-export class ReplTerminal implements IReplTerminal {
-    private terminal: vscode.Terminal;
-    private interpreterPath: string;
+export class ReplTerminal implements Disposable {
+    private readonly disposables: Disposable[] = [];
+    private terminal: Terminal;
 
-    constructor(ip: string) {
-        this.interpreterPath = ip;
+    constructor(private readonly interpreterPath: string, private readonly terminalPath: string | undefined) {
+        this.disposables.push(
+            window.onDidCloseTerminal((closedTerminal: Terminal) => {
+                if (this.terminal === closedTerminal) {
+                    this.terminal = undefined;
+                }
+            })
+        );
+    }
 
-        vscode.window.onDidCloseTerminal((closedTerminal: vscode.Terminal) => {
-            if (this.terminal === closedTerminal) {
-                this.terminal = undefined;
-            }
-        });
+    public dispose() {
+        while (this.disposables.length) {
+            this.disposables.pop()?.dispose();
+        }
     }
 
     public show() {
         if (this.terminal === undefined) {
-            this.terminal = vscode.window.createTerminal("R", this.interpreterPath);
+            this.terminal = window.createTerminal('R', this.getRTerminalPath());
         }
         this.terminal.show(true);
     }
@@ -35,5 +42,9 @@ export class ReplTerminal implements IReplTerminal {
     public sendText(text: string) {
         this.show();
         this.terminal.sendText(text);
+    }
+
+    private getRTerminalPath(): string {
+        return this.terminalPath ?? this.interpreterPath;
     }
 }

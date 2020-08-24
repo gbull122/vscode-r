@@ -6,7 +6,6 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -36,7 +35,7 @@ namespace Microsoft.R.Host.Client.Host {
             // Allow "true" and non-zero integer to enable, otherwise disable.
             var rtvsShowConsole = Environment.GetEnvironmentVariable("RTVS_SHOW_CONSOLE");
             if (!bool.TryParse(rtvsShowConsole, out ShowConsole)) {
-                if (int.TryParse(rtvsShowConsole, out int n) && n != 0) {
+                if (int.TryParse(rtvsShowConsole, out var n) && n != 0) {
                     ShowConsole = true;
                 }
             }
@@ -46,10 +45,9 @@ namespace Microsoft.R.Host.Client.Host {
             : base(name, connectionInfo, _credentials, console, services, sessionProvider) {
             _rHome = connectionInfo.Uri.LocalPath;
             _services = services;
-            IsVerified = true;
         }
 
-        public override async Task<RHost> ConnectAsync(HostConnectionInfo connectionInfo, CancellationToken cancellationToken = default(CancellationToken)) {
+        public override async Task<RHost> ConnectAsync(HostConnectionInfo connectionInfo, CancellationToken cancellationToken = default) {
             await EnsureBrokerStartedAsync(cancellationToken);
             return await base.ConnectAsync(connectionInfo, cancellationToken);
         }
@@ -168,11 +166,8 @@ namespace Microsoft.R.Host.Client.Host {
             var process = _services.Process().Start(psi);
             process.WaitForExit(250);
             if (process.HasExited && process.ExitCode < 0) {
-                var message = _services.Process().MessageFromExitCode(process.ExitCode);
-                if (!string.IsNullOrEmpty(message)) {
-                    throw new RHostDisconnectedException(Resources.Error_UnableToStartBrokerException.FormatInvariant(Name, message), new Win32Exception(message));
-                }
-                throw new RHostDisconnectedException(Resources.Error_UnableToStartBrokerException.FormatInvariant(Name, process.ExitCode), new Win32Exception(process.ExitCode));
+                var message = new Win32Exception(process.ExitCode).Message;
+                throw new RHostDisconnectedException(Resources.Error_UnableToStartBrokerException.FormatInvariant(message, process.ExitCode));
             }
             return process;
         }
@@ -187,7 +182,6 @@ namespace Microsoft.R.Host.Client.Host {
         }
 
         private ProcessStartInfo GetProcessStartInfo(string rhostBrokerExecutable, string pipeName) {
-            ProcessStartInfo psi;
             var baseArguments =
                 $" --logging:logFolder \"{Log.Folder.TrimTrailingSlash()}\"" +
                 $" --logging:logHostOutput {Log.LogVerbosity >= LogVerbosity.Normal}" +
@@ -197,11 +191,10 @@ namespace Microsoft.R.Host.Client.Host {
                 $" --startup:writeServerUrlsToPipe {pipeName}" +
                 $" --lifetime:parentProcessId {Process.GetCurrentProcess().Id}" +
                 $" --security:secret \"{_credentials.Password}\"" +
-                $" --R:autoDetect false" +
                 $" --R:interpreters:{InterpreterId}:name \"{Name}\"" +
                 $" --R:interpreters:{InterpreterId}:basePath \"{_rHome.TrimTrailingSlash()}\"";
 
-            psi = new ProcessStartInfo {
+            var psi = new ProcessStartInfo {
                 FileName = "dotnet",
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
