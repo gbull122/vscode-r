@@ -12,9 +12,11 @@ using Microsoft.Common.Core.Threading;
 using Microsoft.R.DataInspection;
 using Microsoft.R.Host.Client.Host;
 using Microsoft.R.Host.Client.Session;
+using Microsoft.R.Platform;
 using Microsoft.R.Platform.Windows.Interpreters;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -74,7 +76,7 @@ namespace Microsoft.R.Host.Client
                 url = engine.InstallPath;
             }
 
-            var ci = BrokerConnectionInfo.Create(null, name, url);
+            var ci = BrokerConnectionInfo.Create( name, url,null);
             var bc = new LocalBrokerClient(name, ci, new ServiceContainer(), new NullConsole(),null);
             return new RHostSession(new RSession(0, name, bc, new NullLock(), () => { }));
         }
@@ -245,7 +247,30 @@ namespace Microsoft.R.Host.Client
         private Task<IRValueInfo> EvaluateAndDescribeAsync(string expression, REvaluationResultProperties properties, CancellationToken cancellationToken = default(CancellationToken))
             => _session.EvaluateAndDescribeAsync(expression, properties, RValueRepresentations.Str(), cancellationToken);
 
-        private class ServiceContainer : IServiceContainer {
+        private class ServiceContainer : ServiceManager
+        {
+
+            public ServiceContainer()
+            {
+
+                AddService<IActionLog>(s => new Logger("R-Api", Path.GetTempPath(), s));
+                    //.AddService(new ContentTypeServiceLocator())
+                    //.AddService<ISettingsStorage, SettingsStorage>()
+                    //.AddService<ITaskService, TaskService>()
+                    //.AddService<IImageService, ImageService>()
+                    //.AddService(new Application())
+                    //.AddService<IRInteractiveWorkflowProvider, RInteractiveWorkflowProvider>()
+                    //.AddService(new IdleTimeService(this))
+                    //.AddService(new DocumentCollection(this))
+                    //.AddService(new ViewSignatureBroker())
+                    //.AddService(new EditorSupport())
+                    //.AddService(new REvalSession(this))
+                    //.AddService(new SettingsManager(this))
+                    //.AddService(new Controller(this))
+                    //.AddEditorServices();
+
+                PlatformServiceProvider.AddPlatformSpecificServices(this);
+            }
             //public IFileSystem FileSystem => new FileSystem();
             //public IActionLog Log => new NullLog();
             //public ILoggingPermissions LoggingPermissions => null;
@@ -255,12 +280,7 @@ namespace Microsoft.R.Host.Client
             //public ITaskService Tasks => null;
             //public ITelemetryService Telemetry => null;
 
-            public IEnumerable<Type> AllServices => throw new NotImplementedException();
 
-            public T GetService<T>(Type type = null) where T : class
-            {
-                throw new NotImplementedException();
-            }
         }
     }
 }
