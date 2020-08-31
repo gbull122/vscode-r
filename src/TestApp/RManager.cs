@@ -56,15 +56,15 @@ namespace TNCodeApp.R
                 //logger.Log("Connecting to R...", Category.Info, Priority.None);
 
                 var rHostSession = RHostSession.Create("TestApp");
-                rHostSession.Connected += RHostSession_Connected;
-                rHostSession.Disconnected += RHostSession_Disconnected;
+                //rHostSession.Connected += RHostSession_Connected;
+                //rHostSession.Disconnected += RHostSession_Disconnected;
                 rOperations = new ROperations(rHostSession);
                 
                 await rOperations.StartHostAsync(rHostSessionCallback);
                 //await rOperations.ExecuteAsync("library(" + string.Format("\"{0}\"", "R.devices") + ")");
                 //await rOperations.ExecuteAsync("library(" + string.Format("\"{0}\"", "ggplot2") + ")");
 
-                //await rOperations.ExecuteAndOutputAsync("setwd(" + ConvertPathToR(WindowsDirectory) + ")");
+                await rOperations.ExecuteAndOutputAsync("setwd(" + ConvertPathToR(WindowsDirectory) + ")");
                 //logger.Log("Connected to R", Category.Info, Priority.None);
 
             //}

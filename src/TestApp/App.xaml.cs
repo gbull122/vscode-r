@@ -2,6 +2,7 @@
 using Prism.Ioc;
 using Prism.Unity;
 using System;
+using System.Threading.Tasks;
 using System.Windows;
 using TNCodeApp.R;
 
@@ -29,7 +30,7 @@ namespace TestApp
             Setup();
         }
 
-        public async void Setup()
+        public async Task Setup()
         {
             await rManager.InitialiseAsync();
 

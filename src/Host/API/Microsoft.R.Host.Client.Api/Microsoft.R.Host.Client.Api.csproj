@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
@@ -10,9 +11,16 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Common\Core\Impl\Microsoft.R.Common.Core.csproj" />
+    <ProjectReference Include="..\..\..\LanguageServer\Impl\Microsoft.R.LanguageServer.csproj" />
+    <ProjectReference Include="..\..\..\Languages\Core\Impl\Microsoft.Languages.Core.csproj" />
+    <ProjectReference Include="..\..\..\Languages\Editor\Impl\Microsoft.Languages.Editor.csproj" />
+    <ProjectReference Include="..\..\..\R\Components\Impl\Microsoft.R.Components.csproj" />
     <ProjectReference Include="..\..\..\R\Core\Impl\Microsoft.R.Core.csproj" />
+    <ProjectReference Include="..\..\..\R\Editor\Impl\Microsoft.R.Editor.csproj" />
     <ProjectReference Include="..\..\..\R\Platform\Impl\Microsoft.R.Platform.csproj" />
+    <ProjectReference Include="..\..\Broker\Impl\Microsoft.R.Host.Broker.csproj" />
     <ProjectReference Include="..\..\Client\Impl\Microsoft.R.Host.Client.csproj" />
+    <ProjectReference Include="..\..\Protocol\Impl\Microsoft.R.Host.Protocol.csproj" />
   </ItemGroup>
 
 </Project>

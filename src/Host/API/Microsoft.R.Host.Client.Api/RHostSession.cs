@@ -7,15 +7,13 @@ using Microsoft.Common.Core.IO;
 using Microsoft.Common.Core.Logging;
 using Microsoft.Common.Core.OS;
 using Microsoft.Common.Core.Services;
-using Microsoft.Common.Core.Tasks;
-using Microsoft.Common.Core.Threading;
 using Microsoft.R.DataInspection;
 using Microsoft.R.Host.Client.Host;
 using Microsoft.R.Host.Client.Session;
-using Microsoft.R.Platform;
 using Microsoft.R.Platform.Windows.Interpreters;
+using Microsoft.R.Platform.Windows.IO;
+using Microsoft.R.Platform.Windows.OS;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -254,6 +252,8 @@ namespace Microsoft.R.Host.Client
             {
 
                 AddService<IActionLog>(s => new Logger("R-Api", Path.GetTempPath(), s));
+                AddService<IFileSystem>(s=>new WindowsFileSystem());
+                AddService<IProcessServices>(s=>new WindowsProcessServices());
                     //.AddService(new ContentTypeServiceLocator())
                     //.AddService<ISettingsStorage, SettingsStorage>()
                     //.AddService<ITaskService, TaskService>()
@@ -269,7 +269,7 @@ namespace Microsoft.R.Host.Client
                     //.AddService(new Controller(this))
                     //.AddEditorServices();
 
-                PlatformServiceProvider.AddPlatformSpecificServices(this);
+                //PlatformServiceProvider.AddPlatformSpecificServices(this);
             }
             //public IFileSystem FileSystem => new FileSystem();
             //public IActionLog Log => new NullLog();
