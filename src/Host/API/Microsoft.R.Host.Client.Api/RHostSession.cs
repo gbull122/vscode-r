@@ -247,40 +247,13 @@ namespace Microsoft.R.Host.Client
 
         private class ServiceContainer : ServiceManager
         {
-
             public ServiceContainer()
             {
 
                 AddService<IActionLog>(s => new Logger("R-Api", Path.GetTempPath(), s));
                 AddService<IFileSystem>(s=>new WindowsFileSystem());
                 AddService<IProcessServices>(s=>new WindowsProcessServices());
-                    //.AddService(new ContentTypeServiceLocator())
-                    //.AddService<ISettingsStorage, SettingsStorage>()
-                    //.AddService<ITaskService, TaskService>()
-                    //.AddService<IImageService, ImageService>()
-                    //.AddService(new Application())
-                    //.AddService<IRInteractiveWorkflowProvider, RInteractiveWorkflowProvider>()
-                    //.AddService(new IdleTimeService(this))
-                    //.AddService(new DocumentCollection(this))
-                    //.AddService(new ViewSignatureBroker())
-                    //.AddService(new EditorSupport())
-                    //.AddService(new REvalSession(this))
-                    //.AddService(new SettingsManager(this))
-                    //.AddService(new Controller(this))
-                    //.AddEditorServices();
-
-                //PlatformServiceProvider.AddPlatformSpecificServices(this);
             }
-            //public IFileSystem FileSystem => new FileSystem();
-            //public IActionLog Log => new NullLog();
-            //public ILoggingPermissions LoggingPermissions => null;
-            //public IMainThread MainThread => null;
-            //public IProcessServices Process => new ProcessServices();
-            //public ISecurityService Security => null;
-            //public ITaskService Tasks => null;
-            //public ITelemetryService Telemetry => null;
-
-
         }
     }
 }
